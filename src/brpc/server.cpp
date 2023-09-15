@@ -109,6 +109,13 @@ butil::static_atomic<int> g_running_server_count = BUTIL_STATIC_ATOMIC_INIT(0);
 // Following services may have security issues and are disabled by default.
 DEFINE_bool(enable_dir_service, false, "Enable /dir");
 DEFINE_bool(enable_threads_service, false, "Enable /threads");
+DEFINE_bool(enable_status_service, false, "Enable /status");
+DEFINE_bool(enable_vars_service, false, "Enable /vars");
+DEFINE_bool(enable_connections_service, false, "Enable /connections");
+DEFINE_bool(enable_flags_service, false, "Enable /flags");
+DEFINE_bool(enable_rpcz_service, false, "Enable /rpcz");
+DEFINE_bool(enable_hotspots_service, false, "Enable /hotspots/cpu /hotspots/heap /hotspots/growth /hotspots/contention");
+DEFINE_bool(enable_index_service, false, "Enable /index?as_more");
 
 DECLARE_int32(usercode_backup_threads);
 DECLARE_bool(usercode_in_pthread);
@@ -465,31 +472,31 @@ Server::~Server() {
 
 int Server::AddBuiltinServices() {
     // Firstly add services shown in tabs.
-    if (AddBuiltinService(new (std::nothrow) StatusService)) {
+    if (FLAGS_enable_status_service && AddBuiltinService(new (std::nothrow) StatusService)) {
         LOG(ERROR) << "Fail to add StatusService";
         return -1;
     }
-    if (AddBuiltinService(new (std::nothrow) VarsService)) {
+    if (FLAGS_enable_vars_service && AddBuiltinService(new (std::nothrow) VarsService)) {
         LOG(ERROR) << "Fail to add VarsService";
         return -1;
     }
-    if (AddBuiltinService(new (std::nothrow) ConnectionsService)) {
+    if (FLAGS_enable_connections_service && AddBuiltinService(new (std::nothrow) ConnectionsService)) {
         LOG(ERROR) << "Fail to add ConnectionsService";
         return -1;
     }
-    if (AddBuiltinService(new (std::nothrow) FlagsService)) {
+    if (FLAGS_enable_flags_service && AddBuiltinService(new (std::nothrow) FlagsService)) {
         LOG(ERROR) << "Fail to add FlagsService";
         return -1;
     }
-    if (AddBuiltinService(new (std::nothrow) RpczService)) {
+    if (FLAGS_enable_rpcz_service && AddBuiltinService(new (std::nothrow) RpczService)) {
         LOG(ERROR) << "Fail to add RpczService";
         return -1;
     }
-    if (AddBuiltinService(new (std::nothrow) HotspotsService)) {
+    if (FLAGS_enable_hotspots_service && AddBuiltinService(new (std::nothrow) HotspotsService)) {
         LOG(ERROR) << "Fail to add HotspotsService";
         return -1;
     }
-    if (AddBuiltinService(new (std::nothrow) IndexService)) {
+    if (FLAGS_enable_index_service && AddBuiltinService(new (std::nothrow) IndexService)) {
         LOG(ERROR) << "Fail to add IndexService";
         return -1;
     }

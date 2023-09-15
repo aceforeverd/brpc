@@ -111,7 +111,7 @@ static bool read_proc_status(ProcStat &stat) {
     }
     const std::string& result = oss.str();
     if (sscanf(result.c_str(), "%d %d %d %d"
-                              "%d %u %ld %ld",
+                              "%d %x %ld %ld",
                &stat.pid, &stat.ppid, &stat.pgrp, &stat.session,
                &stat.tpgid, &stat.flags, &stat.priority, &stat.nice) != 8) {
         PLOG(WARNING) << "Fail to sscanf";

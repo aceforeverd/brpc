@@ -37,6 +37,8 @@ extern MethodStatus* g_client_msg_status;
 extern MethodStatus* g_server_msg_status;
 }
 
+DECLARE_bool(enable_vars_service);
+
 // Defined in vars_service.cpp
 void PutVarsHeading(std::ostream& os, bool expand_all);
 
@@ -47,7 +49,7 @@ void StatusService::default_method(::google::protobuf::RpcController* cntl_base,
     ClosureGuard done_guard(done);
     Controller *cntl = static_cast<Controller*>(cntl_base);
     const Server* server = cntl->server();
-    const bool use_html = UseHTML(cntl->http_request());
+    const bool use_html = FLAGS_enable_vars_service ? UseHTML(cntl->http_request()) : false;
     
     // NOTE: the plain output also fits format of public/configure so that user
     // can load values more easily.
